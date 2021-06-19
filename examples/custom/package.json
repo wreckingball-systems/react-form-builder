@@ -16,6 +16,7 @@
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "react": "~16.8.6",
+    "react-bootstrap": "^1.6.1",
     "react-dom": "~16.8.6",
     "react-form-builder2": "^0.8.1"
   },

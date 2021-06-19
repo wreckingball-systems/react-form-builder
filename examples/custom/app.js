@@ -4,15 +4,16 @@ import { ReactFormBuilder, ElementStore, Registry } from 'react-form-builder2';
 import DemoBar from './demobar';
 import * as variables from './variables';
 import { get, post } from './requests';
+import MyInput from './InputText';
 
 const getUrl = (cid) => `https://safe-springs-35306.herokuapp.com/api/formdata?cid=${cid}`;
 
 const TestComponent = () => <h2>Hello</h2>;
 
-const MyInput = React.forwardRef((props, ref) => {
-  const { name, defaultValue, disabled } = props;
-  return <input ref={ref} name={name} defaultValue={defaultValue} disabled={disabled} />;
-});
+// const MyInput = React.forwardRef((props, ref) => {
+//   const { name, defaultValue, disabled } = props;
+//   return <input ref={ref} name={name} defaultValue={defaultValue} disabled={disabled} />;
+// });
 
 Registry.register('MyInput', MyInput);
 Registry.register('TestComponent', TestComponent);
@@ -51,7 +52,7 @@ const items = [{
   field_name: 'my_input_',
   name: 'My Input',
   icon: 'fa fa-cog',
-  props: { test: 'test_input' },
+  props: { prepend: 'fa fa-cog' },
   label: 'Label Input',
 }];
 
