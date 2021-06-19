@@ -6,10 +6,11 @@ const Icon = (props) => (<i className={props.icon}></i>);
 
 const InputText = (
     {
+        data,
         name,
         prepend = null,
         onClear = null,
-        label = "",
+        // label = "",
         type = "text",
         autocomplete = false,
         className = false,
@@ -24,6 +25,7 @@ const InputText = (
 ) => {
     const { [name]: { message = false } = {} } = errors;
     const hasError = !!message;
+    const { label } = data;
 
     const getInput = () => {
         const defaultClassName = `form-control${
