@@ -10,6 +10,7 @@ import FormElements from './form-elements';
 import { TwoColumnRow, ThreeColumnRow, FourColumnRow } from './multi-column';
 import CustomElement from './form-elements/custom-element';
 import Registry from './stores/registry';
+import { flatten, parsePages } from './functions';
 
 const {
   Image, Checkboxes, Signature, Download, Camera,
@@ -24,6 +25,13 @@ export default class ReactForm extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      pageNumber: 1,
+    };
+    const parsedData = parsePages(props.data);
+    this.state.parsedData = parsedData; // flatten(parsedData);
+    console.log(this.state.parsedData);
     this.answerData = this._convert(props.answer_data);
     this.emitter = new EventEmitter();
     this.getDataById = this.getDataById.bind(this);
@@ -202,7 +210,7 @@ export default class ReactForm extends React.Component {
     if (errors.length < 1) {
       const { onSubmit } = this.props;
       if (onSubmit) {
-        const data = this._collectFormData(this.props.data);
+        const data = this._collectFormData(this.state.parsedData);
         onSubmit(data);
       } else {
         const $form = ReactDOM.findDOMNode(this.form);
@@ -213,10 +221,10 @@ export default class ReactForm extends React.Component {
 
   validateForm() {
     const errors = [];
-    let data_items = this.props.data;
+    let data_items = this.state.parsedData;
 
     if (this.props.display_short) {
-      data_items = this.props.data.filter((i) => i.alternateForm === true);
+      data_items = this.state.parsedData.filter((i) => i.alternateForm === true);
     }
 
     data_items.forEach(item => {
@@ -290,6 +298,18 @@ export default class ReactForm extends React.Component {
     );
   }
 
+  turnPage(direction) {
+    if (direction === '-') {
+      if (this.state.pageNumber < 1) return;
+      this.setState({ pageNumber: this.state.pageNumber - 1 });
+    }
+
+    if (direction === '+') {
+      if (this.state.pageNumber + 1 >= this.state.parsedData.length) return;
+      this.setState({ pageNumber: this.state.pageNumber + 1 });
+    }
+  }
+
   handleRenderSubmit = () => {
     const {
       actionName = 'Submit',
@@ -300,10 +320,10 @@ export default class ReactForm extends React.Component {
   }
 
   render() {
-    let data_items = this.props.data;
+    let data_items = this.state.parsedData.flat();
 
     if (this.props.display_short) {
-      data_items = this.props.data.filter((i) => i.alternateForm === true);
+      data_items = this.state.parsedData.filter((i) => i.alternateForm === true);
     }
 
     data_items.forEach((item) => {
@@ -314,6 +334,7 @@ export default class ReactForm extends React.Component {
 
     const items = data_items.filter(x => !x.parentId).map(item => {
       if (!item) return null;
+      let elem;
       switch (item.element) {
         case 'TextInput':
         case 'NumberInput':
@@ -324,28 +345,45 @@ export default class ReactForm extends React.Component {
         case 'Rating':
         case 'Tags':
         case 'Range':
-          return this.getInputElement(item);
+          elem = this.getInputElement(item);
+          break;
         case 'CustomElement':
-          return this.getCustomElement(item);
+          elem = this.getCustomElement(item);
+          break;
         case 'FourColumnRow':
-          return this.getContainerElement(item, FourColumnRow);
+          elem = this.getContainerElement(item, FourColumnRow);
+          break;
         case 'ThreeColumnRow':
-          return this.getContainerElement(item, ThreeColumnRow);
+          elem = this.getContainerElement(item, ThreeColumnRow);
+          break;
         case 'TwoColumnRow':
-          return this.getContainerElement(item, TwoColumnRow);
+          elem = this.getContainerElement(item, TwoColumnRow);
+          break;
         case 'Signature':
-          return <Signature ref={c => this.inputs[item.field_name] = c} read_only={this.props.read_only || item.readOnly} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._getDefaultValue(item)} />;
+          elem = <Signature ref={c => this.inputs[item.field_name] = c} read_only={this.props.read_only || item.readOnly} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._getDefaultValue(item)} />;
+          break;
         case 'Checkboxes':
-          return <Checkboxes ref={c => this.inputs[item.field_name] = c} read_only={this.props.read_only} handleChange={this.handleChange} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._optionsDefaultValue(item)} />;
+          elem = <Checkboxes ref={c => this.inputs[item.field_name] = c} read_only={this.props.read_only} handleChange={this.handleChange} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._optionsDefaultValue(item)} />;
+          break;
         case 'Image':
-          return <Image ref={c => this.inputs[item.field_name] = c} handleChange={this.handleChange} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._getDefaultValue(item)} />;
+          elem = <Image ref={c => this.inputs[item.field_name] = c} handleChange={this.handleChange} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._getDefaultValue(item)} />;
+          break;
         case 'Download':
-          return <Download download_path={this.props.download_path} mutable={true} key={`form_${item.id}`} data={item} />;
+          elem = <Download download_path={this.props.download_path} mutable={true} key={`form_${item.id}`} data={item} />;
+          break;
         case 'Camera':
-          return <Camera ref={c => this.inputs[item.field_name] = c} read_only={this.props.read_only || item.readOnly} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._getDefaultValue(item)} />;
+          elem = <Camera ref={c => this.inputs[item.field_name] = c} read_only={this.props.read_only || item.readOnly} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._getDefaultValue(item)} />;
+          break;
         default:
-          return this.getSimpleElement(item);
+          elem = this.getSimpleElement(item);
+          break;
       }
+
+      return (
+        <div className={this.state.pageNumber !== item.pageNumber && 'hidden'}>
+          {elem}
+        </div>
+      )
     });
 
     const formTokenStyle = {
@@ -358,6 +396,9 @@ export default class ReactForm extends React.Component {
       <div>
         <FormValidator emitter={this.emitter} />
         <div className='react-form-builder-form'>
+          <div className="w-full bg-gray-100 rounded-full h-2">
+            <div role="progressbar" style={{width: (`${this.state.pageNumber / this.state.parsedData.length * 100}%`) }} className="bg-blue-300 rounded-full h-2" />
+          </div>
           <form encType='multipart/form-data' ref={c => this.form = c} action={this.props.form_action} onSubmit={this.handleSubmit.bind(this)} method={this.props.form_method}>
             {this.props.authenticity_token &&
               <div style={formTokenStyle}>
@@ -367,6 +408,10 @@ export default class ReactForm extends React.Component {
               </div>
             }
             {items}
+            <div className="flex space-x-2">
+              <div className="px-2 py-1 bg-gray-50 font-medium text-lg" onClick={() => this.turnPage('-')}>Prev</div>
+              <div className="px-2 py-1 bg-gray-50 font-medium text-lg" onClick={() => this.turnPage('+')}>Next</div>
+            </div>
             <div className='btn-toolbar'>
               {!this.props.hide_actions &&
                 this.handleRenderSubmit()

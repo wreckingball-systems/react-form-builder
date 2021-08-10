@@ -18,6 +18,7 @@ class ReactFormBuilder extends React.Component {
     this.state = {
       editMode: false,
       editElement: null,
+      hideToolbar: false,
     };
     this.editModeOn = this.editModeOn.bind(this);
   }
@@ -49,34 +50,38 @@ class ReactFormBuilder extends React.Component {
     return (
       <DndProvider backend={HTML5Backend}>
        <div>
-         {/* <div>
-           <p>
-             It is easy to implement a sortable interface with React DnD. Just make
-             the same component both a drag source and a drop target, and reorder
-             the data in the <code>hover</code> handler.
-           </p>
-           <Container />
-         </div> */}
           <div className="react-form-builder clearfix">
-            <div>
-              <Preview
-                files={this.props.files}
-                manualEditModeOff={this.manualEditModeOff.bind(this)}
-                showCorrectColumn={this.props.showCorrectColumn}
-                parent={this}
-                data={this.props.data}
-                url={this.props.url}
-                saveUrl={this.props.saveUrl}
-                onLoad={this.props.onLoad}
-                onPost={this.props.onPost}
-                editModeOn={this.editModeOn}
-                editMode={this.state.editMode}
-                variables={this.props.variables}
-                registry={Registry}
-                editElement={this.state.editElement}
-                renderEditForm={this.props.renderEditForm}
-              />
-              <Toolbar {...toolbarProps} customItems={this.props.customToolbarItems} />
+            <div className="flex justify-between border border-gray-100 rounded-md">
+              <div className="w-full bg-gray-50">
+                <div className="bg-white p-3 border-b border-gray-100 text-md text-gray-800 font-medium">Editor</div>
+                <Preview
+                  className="p-3"
+                  hideToolbar={(hide = true) => this.setState({ hideToolbar: hide })}
+                  files={this.props.files}
+                  manualEditModeOff={this.manualEditModeOff.bind(this)}
+                  showCorrectColumn={this.props.showCorrectColumn}
+                  parent={this}
+                  data={this.props.data}
+                  url={this.props.url}
+                  saveUrl={this.props.saveUrl}
+                  onLoad={this.props.onLoad}
+                  onPost={this.props.onPost}
+                  editModeOn={this.editModeOn}
+                  editMode={this.state.editMode}
+                  variables={this.props.variables}
+                  registry={Registry}
+                  editElement={this.state.editElement}
+                  renderEditForm={this.props.renderEditForm}
+                />
+              </div>
+              { !this.state.editElement && (
+                <div className="w-1/4 flex-shrink-1 border-l border-gray-100">
+                  <div className="p-3 pl-0 border-b border-gray-100 text-md text-gray-800 font-medium">Fields</div>
+                  <div className="w-full p-3">
+                    <Toolbar {...toolbarProps} customItems={this.props.customToolbarItems} />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

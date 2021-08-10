@@ -14,7 +14,7 @@ class MultiColumnRow extends React.Component {
       controls, data, editModeOn, getDataById, setAsChild, removeChild, seq, className, index,
     } = this.props;
     const { childItems, pageBreakBefore } = data;
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item border border-gray-800';
     if (pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (

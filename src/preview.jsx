@@ -7,6 +7,7 @@ import update from 'immutability-helper';
 import store from './stores/store';
 import FormElementsEdit from './form-elements-edit';
 import SortableFormElements from './sortable-form-elements';
+import { flatten, parsePages } from './functions';
 
 const { PlaceHolder } = SortableFormElements;
 
@@ -247,6 +248,7 @@ export default class Preview extends React.Component {
     if (SortableFormElement === null) {
       return null;
     }
+
     return <SortableFormElement id={item.id} seq={this.seq} index={index} moveCard={this.moveCard} insertCard={this.insertCard} mutable={false} parent={this.props.parent} editModeOn={this.props.editModeOn} isDraggable={true} key={item.id} sortData={item.id} data={item} getDataById={this.getDataById} setAsChild={this.setAsChild} removeChild={this.removeChild} _onDestroy={this._onDestroy} />;
   }
 
@@ -270,14 +272,24 @@ export default class Preview extends React.Component {
     let classes = this.props.className;
     if (this.props.editMode) { classes += ' is-editing'; }
     const data = this.state.data.filter(x => !!x && !x.parentId);
+    // const data = flatten(parsePages(this.state.data.filter(x => !!x && !x.parentId)));
+    // console.log('render', 'before', this.state.data, 'after', data);
     const items = data.map((item, index) => this.getElement(item, index));
     return (
       <div className={classes}>
-        <div className="edit-form" ref={this.editForm}>
-          {this.props.editElement !== null && this.showEditForm()}
+        <div className="flex">
+          <div className="w-full">
+            <div className="Sortable space-y-2">{items}</div>
+            <PlaceHolder id="form-place-holder" show={!items.length} index={items.length} moveCard={this.cardPlaceHolder} insertCard={this.insertCard} />
+          </div>
+          <div className="flex-shrink edit-form" ref={this.editForm}>
+            {!!this.props.editElement && this.showEditForm()}
+          </div>
         </div>
-        <div className="Sortable">{items}</div>
-        <PlaceHolder id="form-place-holder" show={items.length === 0} index={items.length} moveCard={this.cardPlaceHolder} insertCard={this.insertCard} />
+        <p>Form Data</p>
+        <pre>
+          {JSON.stringify(this.state.data, null, 2)}
+        </pre>
       </div>
     );
   }
@@ -287,6 +299,6 @@ Preview.defaultProps = {
   files: [],
   editMode: false,
   editElement: null,
-  className: 'col-md-9 react-form-builder-preview float-left',
+  className: 'w-full',
   renderEditForm: props => <FormElementsEdit {...props} />,
 };

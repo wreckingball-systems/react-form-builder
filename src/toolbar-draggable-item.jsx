@@ -9,8 +9,10 @@ import ID from './UUID';
 
 const cardSource = {
   beginDrag(props) {
+    const uuid = ID.uuid();
+    console.log('new element created', uuid);
     return {
-      id: ID.uuid(),
+      id: uuid,
       index: -1,
       data: props.data,
       onCreate: props.onCreate,
@@ -24,7 +26,10 @@ class ToolbarItem extends React.Component {
     if (!connectDragSource) return null;
     return (
       connectDragSource(
-        <li onClick={onClick}><i className={data.icon}></i>{data.name}</li>,
+        <li className="bg-white mb-2 shadow-sm rounded-lg p-2 cursor-pointer list-none flex space-x-2 items-center" onClick={onClick}>
+          <div className={'bg-indigo-300 p-2 inline-flex text-indigo-600 items-center rounded-full'}><i className={data.icon} /></div>
+          <span>{data.name}</span>
+        </li>,
       )
     );
   }

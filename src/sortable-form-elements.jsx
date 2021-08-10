@@ -5,8 +5,9 @@ import { TwoColumnRow, ThreeColumnRow, FourColumnRow } from './multi-column';
 import CustomElement from './form-elements/custom-element';
 
 const {
-  Header, Paragraph, Label, LineBreak, TextInput, NumberInput, TextArea, Dropdown, Checkboxes,
+  Header, Paragraph, Label, LineBreak, PageBreak, TextInput, NumberInput, TextArea, Dropdown, Checkboxes,
   DatePicker, RadioButtons, Image, Rating, Tags, Signature, HyperLink, Download, Camera, Range,
+  Media,
 } = BaseFormElements;
 
 const FormElements = {};
@@ -15,6 +16,7 @@ FormElements.Header = SortableElement(Header);
 FormElements.Paragraph = SortableElement(Paragraph);
 FormElements.Label = SortableElement(Label);
 FormElements.LineBreak = SortableElement(LineBreak);
+FormElements.PageBreak = SortableElement(PageBreak);
 FormElements.TextInput = SortableElement(TextInput);
 FormElements.NumberInput = SortableElement(NumberInput);
 FormElements.TextArea = SortableElement(TextArea);
@@ -29,6 +31,7 @@ FormElements.Tags = SortableElement(Tags);
 FormElements.HyperLink = SortableElement(HyperLink);
 FormElements.Download = SortableElement(Download);
 FormElements.Camera = SortableElement(Camera);
+FormElements.Media = SortableElement(Media);
 FormElements.Range = SortableElement(Range);
 FormElements.PlaceHolder = SortableElement(PlaceHolder);
 FormElements.TwoColumnRow = SortableElement(TwoColumnRow);

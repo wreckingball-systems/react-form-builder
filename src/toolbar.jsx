@@ -71,6 +71,14 @@ export default class Toolbar extends React.Component {
   _defaultItems() {
     return [
       {
+        key: 'Media',
+        name: 'Media',
+        icon: 'fas fa-camera',
+        // label: 'Placeholder Label',
+        field_name: 'media_',
+        file_path: '',
+      },
+      {
         key: 'Header',
         name: 'Header Text',
         icon: 'fas fa-heading',
@@ -94,6 +102,12 @@ export default class Toolbar extends React.Component {
       {
         key: 'LineBreak',
         name: 'Line Break',
+        static: true,
+        icon: 'fas fa-arrows-alt-h',
+      },
+      {
+        key: 'PageBreak',
+        name: 'Page Break',
         static: true,
         icon: 'fas fa-arrows-alt-h',
       },
@@ -361,8 +375,7 @@ export default class Toolbar extends React.Component {
 
   render() {
     return (
-      <div className="col-md-3 react-form-builder-toolbar float-right">
-        <h4>Toolbox</h4>
+      <div className="flex-shrink-0 w-full">
         <ul>
           {
             this.state.items.map((item) => (<ToolbarItem data={item} key={item.key} onClick={this._onClick.bind(this, item)} onCreate={this.create} />))

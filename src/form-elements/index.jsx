@@ -20,7 +20,8 @@ class Header extends React.Component {
     if (this.props.data.bold) { classNames += ' bold'; }
     if (this.props.data.italic) { classNames += ' italic'; }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -38,7 +39,8 @@ class Paragraph extends React.Component {
     if (this.props.data.bold) { classNames += ' bold'; }
     if (this.props.data.italic) { classNames += ' italic'; }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -56,7 +58,8 @@ class Label extends React.Component {
     if (this.props.data.bold) { classNames += ' bold'; }
     if (this.props.data.italic) { classNames += ' italic'; }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -70,13 +73,29 @@ class Label extends React.Component {
 
 class LineBreak extends React.Component {
   render() {
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
       <div className={baseClasses}>
         <ComponentHeader {...this.props} />
-        <hr />
+        <hr className="mx-2" />
+      </div>
+    );
+  }
+}
+
+class PageBreak extends React.Component {
+  render() {
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
+    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+
+    return (
+      <div className={baseClasses}>
+        <ComponentHeader {...this.props} />
+        <hr className="mx-2" />
       </div>
     );
   }
@@ -98,7 +117,8 @@ class TextInput extends React.Component {
       props.ref = this.inputField;
     }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     if (this.props.read_only) {
@@ -138,7 +158,8 @@ class NumberInput extends React.Component {
       props.disabled = 'disabled';
     }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -173,7 +194,8 @@ class TextArea extends React.Component {
       props.ref = this.inputField;
     }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -209,7 +231,8 @@ class Dropdown extends React.Component {
       props.disabled = 'disabled';
     }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -266,7 +289,8 @@ class Signature extends React.Component {
       canClear = !this.props.read_only;
     }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     let sourceDataURL;
@@ -335,7 +359,8 @@ class Tags extends React.Component {
       props.ref = this.inputField;
     }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -361,7 +386,8 @@ class Checkboxes extends React.Component {
     let classNames = 'custom-control custom-checkbox';
     if (this.props.data.inline) { classNames += ' option-inline'; }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -384,12 +410,12 @@ class Checkboxes extends React.Component {
             }
             return (
               <div className={classNames} key={this_key}>
-                <input id={"fid_" + this_key} className="custom-control-input" ref={c => {
+                <input id={`fid_${this_key}`} className="custom-control-input" ref={c => {
                   if (c && self.props.mutable) {
                     self.options[`child_ref_${option.key}`] = c;
                   }
                 }} {...props} />
-                <label className="custom-control-label" htmlFor={"fid_" + this_key}>{option.text}</label>
+                <label className="custom-control-label" htmlFor={`fid_${this_key}`}>{option.text}</label>
               </div>
             );
           })}
@@ -410,7 +436,8 @@ class RadioButtons extends React.Component {
     let classNames = 'custom-control custom-radio';
     if (this.props.data.inline) { classNames += ' option-inline'; }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -450,11 +477,34 @@ class RadioButtons extends React.Component {
   }
 }
 
+class Media extends React.Component {
+  render() {
+    const style = (this.props.data.center) ? { textAlign: 'center' } : null;
+
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
+    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+
+    return (
+      <div className={baseClasses} style={style}>
+        <ComponentHeader {...this.props} />
+        { this.props.data.src &&
+          <img src={this.props.data.src} width={this.props.data.width} height={this.props.data.height} />
+        }
+        { !this.props.data.src &&
+          <div className="no-image">No Image</div>
+        }
+      </div>
+    );
+  }
+}
+
 class Image extends React.Component {
   render() {
     const style = (this.props.data.center) ? { textAlign: 'center' } : null;
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -489,7 +539,8 @@ class Rating extends React.Component {
       props.ref = this.inputField;
     }
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -506,7 +557,8 @@ class Rating extends React.Component {
 
 class HyperLink extends React.Component {
   render() {
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -522,14 +574,16 @@ class HyperLink extends React.Component {
 
 class Download extends React.Component {
   render() {
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
       <div className={baseClasses}>
         <ComponentHeader {...this.props} />
         <div className="form-group">
-          <a href={`${this.props.download_path}?id=${this.props.data.file_path}`}>{this.props.data.content}</a>
+          <img src={this.props.data.file_path} />
+          {/*<a href={`${this.props.download_path}?id=${this.props.data.file_path}`}>{this.props.data.content}</a>*/}
         </div>
       </div>
     );
@@ -569,7 +623,8 @@ class Camera extends React.Component {
   };
 
   render() {
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     const name = this.props.data.field_name;
     const fileInputStyle = this.state.img ? { display: 'none' } : null;
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
@@ -667,7 +722,8 @@ class Range extends React.Component {
       return <label {...option_props}>{d}</label>;
     });
 
-    let baseClasses = 'SortableItem rfb-item';
+    let baseClasses = 'SortableItem rfb-item bg-white';
+    if (!this.props.mutable) baseClasses += ' p-3 shadow-sm mb-3 rounded-lg';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
 
     return (
@@ -699,6 +755,7 @@ FormElements.Header = Header;
 FormElements.Paragraph = Paragraph;
 FormElements.Label = Label;
 FormElements.LineBreak = LineBreak;
+FormElements.PageBreak = PageBreak;
 FormElements.TextInput = TextInput;
 FormElements.NumberInput = NumberInput;
 FormElements.TextArea = TextArea;
@@ -714,5 +771,6 @@ FormElements.HyperLink = HyperLink;
 FormElements.Download = Download;
 FormElements.Camera = Camera;
 FormElements.Range = Range;
+FormElements.Media = Media;
 
 export default FormElements;

@@ -235,19 +235,19 @@
       padding: 10px;
       border: 1px dashed #ddd;
     }
-    ul {
-      padding: 0;
-      li {
-        cursor: pointer;
-        list-style: none;
-        margin: 5px;
-        padding: 10px;
-        border: 1px dashed #ddd;
-        i {
-          margin: 0 15px 0 10px;
-        }
-      }
-    }
+    //ul {
+    //  padding: 0;
+    //  li {
+    //    cursor: pointer;
+    //    list-style: none;
+    //    margin: 5px;
+    //    padding: 10px;
+    //    border: 1px dashed #ddd;
+    //    i {
+    //      margin: 0 15px 0 10px;
+    //    }
+    //  }
+    //}
   }
 }
 
@@ -406,7 +406,7 @@
 }
 
 .form-place-holder {
-  margin:10px; 
+  margin:10px;
   border:2px dashed #bbb;
   -moz-border-radius:5px;
   -webkit-border-radius:5px;

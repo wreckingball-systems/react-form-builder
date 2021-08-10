@@ -1,5 +1,6 @@
 import Store from 'beedle';
 import { get, post } from './requests';
+import { parsePages } from '../functions';
 
 let _saveUrl;
 let _onPost;

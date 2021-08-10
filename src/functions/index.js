@@ -9,6 +9,30 @@ const generateUUID = () => ID.uuid();
 
 const TextAreaAutosize = (props) => <PkgTextAreaAutosize {...props} />;
 
+const parsePages = (data) => {
+  const pages = [];
+  let pageNumber = 0;
+
+  data.forEach((field) => {
+    pages[pageNumber] = pages[pageNumber] || [];
+    if (field.element === 'PageBreak') {
+      pageNumber++;
+      return;
+    }
+    field.pageNumber = pageNumber;
+    pages[pageNumber].push(field);
+  });
+
+  return pages;
+};
+
+const flatten = (arrays) => {
+  console.log('Change')
+  return arrays.reduce((acc, d) => {
+    return [...acc, ...(d || [])];
+  }, []);
+};
+
 export {
- generateUUID, TextAreaAutosize, DraftJs, draftToHtml, Editor,
+ generateUUID, flatten, TextAreaAutosize, DraftJs, draftToHtml, Editor, parsePages,
 };

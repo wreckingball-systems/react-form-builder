@@ -8,9 +8,10 @@ import Grip from '../multi-column/grip';
 export default class HeaderBar extends React.Component {
   render() {
     return (
-      <div className="toolbar-header">
-        <span className="badge badge-secondary">{this.props.data.text}</span>
-        <div className="toolbar-header-buttons">
+      <div className="flex justify-between items-center py-2">
+        <div className="bg-black bg-opacity-25 rounded-md py-1 px-1.5 text-xs font-medium text-white">{this.props.data.text}</div>
+        {/*<span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">{this.props.data.text}</span>*/}
+        <div className="flex space-x-2 hover:text-gray-500 text-gray-100">
           { this.props.data.element !== 'LineBreak' &&
             <div className="btn is-isolated" onClick={this.props.editModeOn.bind(this.props.parent, this.props.data)}><i className="is-isolated fas fa-edit"></i></div>
           }

@@ -33,6 +33,7 @@
     }
   ],
   "dependencies": {
+    "@headlessui/react": "^1.4.0",
     "beedle": "^0.8.1",
     "classnames": "^2.2.6",
     "date-fns": "^2.16.1",
